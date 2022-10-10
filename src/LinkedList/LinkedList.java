@@ -1,3 +1,5 @@
+package LinkedList;
+
 public class LinkedList<T> {
     // Each IntLinkedList keeps track of its own head node
     private Node<T> head;
