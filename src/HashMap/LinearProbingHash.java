@@ -102,16 +102,6 @@ public class LinearProbingHash {
                 hashValue = (hashValue==capacity-1) ? 0 : hashValue+1;
             }
         } while (hashValue!=firstHashValue);
-
-        //rehashing
-        if(currentSize==capacity/2){
-            int[] oldArr = arr;
-            capacity/=2;
-            arr = new int[capacity];
-            for(int x:oldArr){
-                insert(x);
-            }
-        }
     }
 
     // Prints out the table in a nice-ish format
