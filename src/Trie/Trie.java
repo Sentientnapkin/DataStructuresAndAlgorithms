@@ -57,6 +57,18 @@ public class Trie {
         currNode.isWord = false;
     }
 
+    public void autoComplete(String str) {
+        TrieNode currNode = root;
+        for(int i = 0;i<str.length();i++){
+            int index = charToIndex(str.charAt(i));
+            if(currNode.children[index]==null){
+                return;
+            }
+            currNode = currNode.children[index];
+        }
+        printRec(currNode, str);
+    }
+
     // Calls the printRec method
     public void print() {
         printRec(this.root, "");
