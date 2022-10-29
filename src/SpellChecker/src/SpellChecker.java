@@ -82,14 +82,89 @@ public class SpellChecker {
     // 4) Every word you get by substituting one letter for another
     //    Ex. "thia" -> "this"
     public void suggest(String word) {
-        // YOUR CODE HERE
+        //switch a letter
+        for(int i = 0;i<word.length()-1;i++){
+            String temp = word.substring(0, i) + word.charAt(i+1)+ word.charAt(i) + word.substring(i+2);
+            if(levenshteinDistance(word, temp)<=2){
+                if(checkWord(temp)){
+                    System.out.println(word+": "+temp);
+                }
+            }
+        }
+
+        //add a letter
+        for(int i = 0;i<=word.length();i++){
+            for(int j = 0;j<26;j++){
+                String temp = word.substring(0, i) + (char)(j+'a') + word.substring(i);
+                if(levenshteinDistance(word, temp)<=2){
+                    if(checkWord(temp)){
+                        System.out.println(word+": "+temp);
+                    }
+                }
+            }
+        }
+
+        //remove a letter
+        for(int i = 0;i<word.length();i++){
+            String temp = word.substring(0, i) + word.substring(i+1);
+            if(levenshteinDistance(word, temp)<=2){
+                if(checkWord(temp)){
+                    System.out.println(word+": "+temp);
+                }
+            }
+        }
+
+        //replace a letter
+        for(int i = 0;i<word.length();i++){
+            for(int j = 0;j<26;j++){
+                String temp = word.substring(0, i) + (char)(j+'a') + word.substring(i+1);
+                if(levenshteinDistance(word, temp)<=2){
+                    if(checkWord(temp)){
+                        System.out.println(word+": "+temp);
+                    }
+                }
+            }
+        }
     }
 
-    public int levenshteinDistance(String a, String b){
-        return 0;
+    public int levenshteinDistance(String s, String t){
+        int n = s.length();
+        int m = t.length();
+        if(n==0){
+            return m;
+        }
+        if(m==0){
+            return n;
+        }
+
+        s=s.toLowerCase();
+        t=t.toLowerCase();
+
+        int[][] d = new int[m+1][n+1];
+        for(int i = 0;i<=n;i++){
+            d[0][i] = i;
+        }
+        for(int j = 0;j<=m;j++){
+            d[j][0] = j;
+        }
+
+        for(int i = 1; i<m+1; i++){
+            for(int j = 1;j<n+1;j++){
+                int cost = 0;
+                if(s.charAt(j-1)!=t.charAt(i-1)){
+                    cost++;
+                }
+                d[i][j]=Math.min(d[i-1][j]+1, Math.min(d[i][j-1]+1, d[i-1][j-1]+cost));
+            }
+        }
+
+        return d[m][n];
     }
 
     public static void main(String[] args) throws FileNotFoundException {
+        SpellChecker spell = new SpellChecker();
+        System.out.println(spell.levenshteinDistance("banan", "banana"));
+
         // --------------------------
         // Test 1: Load Test
         // --------------------------
