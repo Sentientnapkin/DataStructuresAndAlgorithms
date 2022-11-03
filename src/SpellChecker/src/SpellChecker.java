@@ -4,6 +4,7 @@ import Trie.Trie;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class SpellChecker {
@@ -82,12 +83,16 @@ public class SpellChecker {
     // 4) Every word you get by substituting one letter for another
     //    Ex. "thia" -> "this"
     public void suggest(String word) {
+        HashSet<String> validWords = new HashSet<String>();
+        System.out.print(word+": ");
+
         //switch a letter
         for(int i = 0;i<word.length()-1;i++){
             String temp = word.substring(0, i) + word.charAt(i+1)+ word.charAt(i) + word.substring(i+2);
             if(levenshteinDistance(word, temp)<=2){
-                if(checkWord(temp)){
-                    System.out.println(word+": "+temp);
+                if(checkWord(temp)&&!validWords.contains(temp)){
+                    System.out.print(temp+" ");
+                    validWords.add(temp);
                 }
             }
         }
@@ -97,8 +102,9 @@ public class SpellChecker {
             for(int j = 0;j<26;j++){
                 String temp = word.substring(0, i) + (char)(j+'a') + word.substring(i);
                 if(levenshteinDistance(word, temp)<=2){
-                    if(checkWord(temp)){
-                        System.out.println(word+": "+temp);
+                    if(checkWord(temp)&&!validWords.contains(temp)){
+                        System.out.print(temp+" ");
+                        validWords.add(temp);
                     }
                 }
             }
@@ -108,8 +114,9 @@ public class SpellChecker {
         for(int i = 0;i<word.length();i++){
             String temp = word.substring(0, i) + word.substring(i+1);
             if(levenshteinDistance(word, temp)<=2){
-                if(checkWord(temp)){
-                    System.out.println(word+": "+temp);
+                if(checkWord(temp)&&!validWords.contains(temp)){
+                    System.out.print(temp+" ");
+                    validWords.add(temp);
                 }
             }
         }
@@ -119,12 +126,15 @@ public class SpellChecker {
             for(int j = 0;j<26;j++){
                 String temp = word.substring(0, i) + (char)(j+'a') + word.substring(i+1);
                 if(levenshteinDistance(word, temp)<=2){
-                    if(checkWord(temp)){
-                        System.out.println(word+": "+temp);
+                    if(checkWord(temp)&&!validWords.contains(temp)){
+                        System.out.print(temp+" ");
+                        validWords.add(temp);
                     }
                 }
             }
         }
+
+        System.out.println("");
     }
 
     public int levenshteinDistance(String s, String t){
