@@ -72,7 +72,7 @@ public class SpellChecker {
     }
 
     // Given a String word, comes up with possible words that the
-    // user might've meant
+    // user might've meant``
     // This method should make the following possible suggestions
     // 1) Every word you get by swapping one letter for another
     //    Ex. "thsi" -> "this"
@@ -83,58 +83,54 @@ public class SpellChecker {
     // 4) Every word you get by substituting one letter for another
     //    Ex. "thia" -> "this"
     public void suggest(String word) {
-        HashSet<String> validWords = new HashSet<String>();
-        System.out.print(word+": ");
+        HashSet<String> validWords = new HashSet<>();
+        String toPrint = word + ": "; //thanks to Anay's comments for this idea
 
         //switch a letter
         for(int i = 0;i<word.length()-1;i++){
             String temp = word.substring(0, i) + word.charAt(i+1)+ word.charAt(i) + word.substring(i+2);
-            if(levenshteinDistance(word, temp)<=2){
                 if(checkWord(temp)&&!validWords.contains(temp)){
-                    System.out.print(temp+" ");
+                    toPrint += temp+" ";
                     validWords.add(temp);
                 }
-            }
         }
 
         //add a letter
         for(int i = 0;i<=word.length();i++){
             for(int j = 0;j<26;j++){
                 String temp = word.substring(0, i) + (char)(j+'a') + word.substring(i);
-                if(levenshteinDistance(word, temp)<=2){
                     if(checkWord(temp)&&!validWords.contains(temp)){
-                        System.out.print(temp+" ");
+                        toPrint += temp+" ";
                         validWords.add(temp);
                     }
                 }
-            }
         }
 
         //remove a letter
         for(int i = 0;i<word.length();i++){
             String temp = word.substring(0, i) + word.substring(i+1);
-            if(levenshteinDistance(word, temp)<=2){
                 if(checkWord(temp)&&!validWords.contains(temp)){
-                    System.out.print(temp+" ");
+                    toPrint += temp+" ";
                     validWords.add(temp);
                 }
-            }
         }
 
         //replace a letter
         for(int i = 0;i<word.length();i++){
             for(int j = 0;j<26;j++){
                 String temp = word.substring(0, i) + (char)(j+'a') + word.substring(i+1);
-                if(levenshteinDistance(word, temp)<=2){
                     if(checkWord(temp)&&!validWords.contains(temp)){
-                        System.out.print(temp+" ");
+                        toPrint += temp+" ";
                         validWords.add(temp);
                     }
                 }
-            }
         }
 
-        System.out.println("");
+        if(toPrint.length()==word.length()+2){
+            System.out.println("No suggestions for " + word);
+        } else {
+            System.out.println(toPrint);
+        }
     }
 
     public int levenshteinDistance(String s, String t){
