@@ -1,6 +1,4 @@
-package SpellChecker;
-
-import SpellChecker.src.SpellChecker;
+package SpellChecker.src;
 
 import java.io.IOException;
 import java.util.HashSet;
