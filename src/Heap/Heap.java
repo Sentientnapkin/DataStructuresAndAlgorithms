@@ -92,9 +92,8 @@ public class Heap {
     }
 
     public boolean shouldTrickle(int index){
-        return (child1(index) < currentSize || child2(index) < currentSize)
-                && ((arr[index] > arr[child1(index)] && child1(index)<currentSize)
-                || (arr[index] > arr[child2(index)] && child2(index)<currentSize));
+        return ((child1(index)<currentSize && arr[index] > arr[child1(index)])
+                || (child2(index)<currentSize) && arr[index] > arr[child2(index)]);
     }
 
     // Move the element with the given index down to it's correct location
@@ -167,7 +166,9 @@ public class Heap {
             sorted.trickleDown(i);
         }
 
-        System.arraycopy(sorted.arr, 0, unsortedArr, 0, unsortedArr.length);
+        for(int i = 0;i<unsortedArr.length;i++){
+            unsortedArr[i] = sorted.deleteMin();
+        }
     }
 
     // Creates an array of 100 random numbers between 0 and 10000
@@ -436,24 +437,25 @@ public class Heap {
         // You should use generate100() to make random arrays and
         // duplicate100() to duplicate the random array
 
-        // In the end, your code should output something such as:
-        // -------------------
-        // Test 7: Faster Heapsort
-        // Normal heapsort takes 5362.3701 ns on average (10000 trials)
-        // Faster heapsort takes 4127.5475 ns on average (10000 trials)
+        long NormalTotalTime = 0;
+        long FastTotalTime = 0;
+        for(int trial = 0;trial<10000;trial++){
+            int[] randomsNormal = generator100();
+            int[] randomsFast = duplicate100(randomsNormal);
 
-        // Here is an example of some very basic timing code
-        int[] randoms = generator100();
+            long startTime = System.nanoTime();
+            heapSort(randomsNormal);
+            long stopTime = System.nanoTime();
+            NormalTotalTime += stopTime - startTime;
 
-        // "Start" the timer
-        long startTime = System.nanoTime();
-        // Call heap sort
-        heapSort(randoms);
-        // "Stop" the timer
-        long stopTime = System.nanoTime();
+            startTime = System.nanoTime();
+            fasterHeapSort(randomsFast);
+            stopTime = System.nanoTime();
+            FastTotalTime += stopTime - startTime;
+        }
 
-        long timeElapsed = stopTime - startTime;
-        System.out.println("Normal heapsort takes " + timeElapsed + " ns (1 trial)");
+        System.out.println("Normal heapsort takes " + NormalTotalTime/10000 + " ns on average (10000 trials)");
+        System.out.println("Faster heapsort takes " + FastTotalTime/10000 + " ns on average (10000 trials)");
     }
 }
 

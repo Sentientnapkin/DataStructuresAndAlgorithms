@@ -62,6 +62,19 @@ public class SpellCheckerProgram {
                     System.out.println("Would you like to spellcheck a word or a document? (word/document)");
                     String spellcheckType = scan.nextLine();
 
+                    if (spellcheckType.equals("document")) {
+                        System.out.println("What is the file location of the document?");
+                        String document = scan.nextLine();
+                        speller.check(document);
+                        break;
+                    } else if (spellcheckType.equals("word")) {
+                        System.out.println("Enter the word");
+                        String word = scan.nextLine();
+                        boolean isValid = speller.checkWord(word);
+                        System.out.println("This is a " + (isValid ? "valid" : "misspelled") + " word");
+                        break;
+                    }
+
                     if(speller.levenshteinDistance(spellcheckType, "word")<=2){
                         System.out.println("Did you mean word? (y/n)");
                         String suggestCorrect = scan.nextLine();
