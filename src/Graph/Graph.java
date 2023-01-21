@@ -96,6 +96,51 @@ public class Graph {
         return false;
     }
 
+    public String breadthFirstSearchWithPath(String s, String t) {
+        HashMap<String, String> path = new HashMap<>();
+        boolean found = false;
+
+        HashSet<Vertex> visited = new HashSet<>();
+        Queue<Vertex> queue = new LinkedList<>();
+        visited.add(vertices.get(s));
+        queue.offer(vertices.get(s));
+
+        while(!queue.isEmpty()){
+            if(found){
+                break;
+            }
+            Vertex n = queue.poll();
+            for(Vertex v: n.neighbors){
+                if(!visited.contains(v)){
+                    visited.add(v);
+                    queue.offer(v);
+                    path.put(v.label, n.label);
+                }
+                if(v==vertices.get(t)){
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if(!found){
+            return "no path";
+        }
+
+        Vertex current = vertices.get(t);
+        String pathStringRev = t;
+        while (current.label != s){
+            pathStringRev += path.get(current.label);
+            current = vertices.get(path.get(current.label));
+        }
+
+        String pathString = "";
+        for(int i = pathStringRev.length()-1;i>=0;i--){
+            pathString += pathStringRev.charAt(i);
+        }
+        return pathString;
+    }
+
     public void printGraph() {
         int longest = 7;
         for (String str: vertices.keySet()) {
@@ -353,6 +398,69 @@ public class Graph {
 
         System.out.println(graph3.breadthFirstSearch("A", "Z"));
         System.out.println();
+
+        // --------------------------
+        // Test 10: BFS Pathfinding
+        // --------------------------
+        System.out.println("-------------------");
+        System.out.println("Test 10: BFS Pathfinding");
+        System.out.println("Expected:");
+        System.out.println("ACB\n" +
+                "AC\n" +
+                "AD\n" +
+                "AE\n" +
+                "AEF\n" +
+                "AIG\n" +
+                "AIH\n" +
+                "AI\n" +
+                "AJ\n" +
+                "no path");
+
+        System.out.println("\nGot:");
+
+        Graph graph4 = new Graph();
+        graph4.addVertex("A");
+        graph4.addVertex("B");
+        graph4.addVertex("C");
+        graph4.addVertex("D");
+        graph4.addVertex("E");
+        graph4.addVertex("F");
+        graph4.addVertex("G");
+        graph4.addVertex("H");
+        graph4.addVertex("I");
+        graph4.addVertex("J");
+
+
+        graph4.addEdge("A", "C");
+        graph4.addEdge("A", "D");
+        graph4.addEdge("A", "E");
+        graph4.addEdge("A", "I");
+        graph4.addEdge("A", "J");
+        graph4.addEdge("B", "C");
+        graph4.addEdge("B", "H");
+        graph4.addEdge("B", "I");
+        graph4.addEdge("D", "I");
+        graph4.addEdge("D", "E");
+        graph4.addEdge("E", "F");
+        graph4.addEdge("F", "G");
+        graph4.addEdge("F", "J");
+        graph4.addEdge("G", "H");
+        graph4.addEdge("G", "I");
+        graph4.addEdge("G", "J");
+        graph4.addEdge("H", "I");
+        graph4.addEdge("H", "J");
+        graph4.addEdge("I", "J");
+
+        System.out.println(graph4.breadthFirstSearchWithPath("A", "B"));
+        System.out.println(graph4.breadthFirstSearchWithPath("A", "C"));
+        System.out.println(graph4.breadthFirstSearchWithPath("A", "D"));
+        System.out.println(graph4.breadthFirstSearchWithPath("A", "E"));
+        System.out.println(graph4.breadthFirstSearchWithPath("A", "F"));
+        System.out.println(graph4.breadthFirstSearchWithPath("A", "G"));
+        System.out.println(graph4.breadthFirstSearchWithPath("A", "H"));
+        System.out.println(graph4.breadthFirstSearchWithPath("A", "I"));
+        System.out.println(graph4.breadthFirstSearchWithPath("A", "J"));
+        System.out.println(graph4.breadthFirstSearchWithPath("A", "Z"));
     }
 }
 
