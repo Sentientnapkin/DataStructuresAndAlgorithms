@@ -96,15 +96,6 @@ public class BestFirstSearchGraph {
     return false;
   }
 
-  public int weightFromTwoVertexes(GridVertex v1, GridVertex v2) {
-    for (WeightedEdge e : v1.edges) {
-      if (e.destination.label.equals(v2.label)) {
-        return e.weight;
-      }
-    }
-    return 0;
-  }
-
   // Carries out bestFirstSearch from the source to the destination
   // Returns the length of the path
   // To aid in seeing what path your algorithm follows, it is
@@ -121,21 +112,18 @@ public class BestFirstSearchGraph {
     }
     distances.put(vertices.get(source).label, 0);
 
-    int finalDistance = 0;
     while (!frontier.isEmpty()) {
       GridVertex v = vertices.get(frontier.poll().label);
       System.out.println(v.label);
       for (WeightedEdge e : v.edges) {
         GridVertex n = e.destination;
-        if (distances.get(n.label) > distances.get(v.label) + e.weight) {
-          distances.put(n.label, distances.get(v.label) + e.weight);
-        }
         if (n.label.equals(destination)) {
           distances.entrySet().removeIf(entry -> distances.get(entry.getKey()) == Integer.MAX_VALUE);
-          finalDistance = distances.get(destination);
-          distances.remove(destination);
           System.out.println(distances);
-          return finalDistance;
+          return distances.get(v.label) + e.weight;
+        }
+        if (distances.get(n.label) > distances.get(v.label) + e.weight) {
+          distances.put(n.label, distances.get(v.label) + e.weight);
         }
         if (!(queueContainsLabel(frontier, n.label) || visited.contains(n))) {
           visited.add(n);
