@@ -4,6 +4,7 @@ import DataStructures.Trie.Trie;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -132,6 +133,22 @@ public class SpellChecker {
             System.out.println(toPrint);
         }
     }
+
+	public void levenshteinSuggest (String word) throws FileNotFoundException {
+		ArrayList<String> dict = new ArrayList<>();
+		Scanner scan = new Scanner(new File("src/DataStructures/SpellChecker/dictionaries/words.txt"));
+		while (scan.hasNext()) {
+			String w = scan.next();
+			dict.add(w);
+		}
+
+		for(String str: dict){
+			if(levenshteinDistance(word, str) < 3){
+				System.out.print(str + "  ");
+			}
+		}
+		System.out.println();
+	}
 
     public int levenshteinDistance(String s, String t){
         int n = s.length();
