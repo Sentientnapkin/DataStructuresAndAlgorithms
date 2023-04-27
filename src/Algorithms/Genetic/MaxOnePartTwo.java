@@ -103,20 +103,20 @@ public class MaxOnePartTwo {
             generationNum++;
 
             // Carry out selection
-            Individual[] parents = selectParentsTournament();
-//            Individual[] parents = selectParentsRoulette();
+           Individual[] parents = selectParentsTournament();
+ //           Individual[] parents = selectParentsRoulette();
 
-//            Individual[] nextGeneration = singlePointCrossover(parents);
+//           Individual[] nextGeneration = singlePointCrossover(parents);
 //            Individual[] nextGeneration = twoPointCrossover(parents);
             Individual[] nextGeneration = uniformCrossover(parents);
 
             nextGeneration = mutation(nextGeneration);
 
             // Optional: Carry out elitism
-            nextGeneration = elitism(nextGeneration);
+  //          nextGeneration = elitism(nextGeneration);
 
             population = nextGeneration;
-//            printPopulation(generationNum);
+ //           printPopulation(generationNum);
         }
     }
 
